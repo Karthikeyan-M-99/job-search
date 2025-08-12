@@ -1,25 +1,14 @@
 workflows:
-  android:
-    name: Android Build
-    max_build_duration: 60
+  android-workflow:
+    name: Build Android APK
+    max_build_duration: 30
     environment:
-      vars:
-        JAVA_VERSION: 17
-      android_signing:
-        - keystore_reference
+      java: 17
+      android: latest
     scripts:
-      - name: Set up Gradle Wrapper
+      - name: Build debug APK
         script: |
-          chmod +x ./gradlew
-      - name: Build Debug APK
-        script: |
+          cd job-search
           ./gradlew assembleDebug
     artifacts:
-      - app/build/outputs/**/*.apk
-    publishing:
-      email:
-        recipients:
-          - your-email@example.com
-        notify:
-          success: true
-          failure: true
+      - job-search/app/build/outputs/apk/debug/*.apk
